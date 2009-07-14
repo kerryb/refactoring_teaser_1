@@ -5,10 +5,8 @@
 require 'spec'
 
 module StringExtensions
-  REGEX_TO_SPLIT_ALONG_WHITESPACES = /\s+/
- 
   def phrases(number)
-    strings = split(REGEX_TO_SPLIT_ALONG_WHITESPACES)
+    strings = split
     all_strings = single_double_triple_words(strings)
     all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
   end
