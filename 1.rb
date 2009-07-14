@@ -18,8 +18,6 @@ module StringExtensions
     all_strings = []
     num_words = strings.size
  
-    return all_strings unless has_enough_words(num_words)
- 
     # Extracting double-word phrases
     (0...num_words - 1).each do |i|
       all_strings << "#{strings[i]} #{strings[i + 1]}"
@@ -30,10 +28,6 @@ module StringExtensions
       all_strings << "#{strings[i]} #{strings[i + 1]} #{strings[i + 2]}"
     end
     return all_strings
-  end
-  
-  def has_enough_words(num_words)
-    num_words >= 3
   end
 end
 
