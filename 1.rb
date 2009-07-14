@@ -1,14 +1,16 @@
-#!/user/bin/env ruby
+#!/usr/bin/env ruby
 #
 #See http://blogs.agilefaqs.com/2009/07/08/refactoring-teaser-part-1/
 
+require 'spec'
+
 module StringExtensions
-  REGEX_TO_SPLIT_ALONG_WHITESPACES = /\p{Z}|\p{P}/
+  REGEX_TO_SPLIT_ALONG_WHITESPACES = /\s+/
  
-  def phrases(content, number)
-    listOfKeywords = ""
+  def phrases(number)
+    list_of_keywords = ""
     count = 0
-    strings = content.split(REGEX_TO_SPLIT_ALONG_WHITESPACES)
+    strings = split(REGEX_TO_SPLIT_ALONG_WHITESPACES)
     all_strings = single_double_triple_words(strings)
     size = all_strings.size
     all_strings.each do |phrase|
@@ -18,9 +20,11 @@ module StringExtensions
       if (count < size && count < number)
         list_of_keywords += ", "
       end
-    }
+    end
     return list_of_keywords
-  }
+  end
+ 
+  private
  
   def single_double_triple_words(strings)
     all_strings = []
@@ -28,29 +32,27 @@ module StringExtensions
  
     return all_strings unless has_enough_words(num_words)
  
-    # Extracting single words. Total size of words == numWords
+    # Extracting single words. Total size of words == num_words
  
     # Extracting single-word phrases.
-    (0..num_words).each do |i|
+    (0...num_words).each do |i|
       all_strings << strings[i]
-    }
+    end
  
     # Extracting double-word phrases
-    (0..num_words - 1).each do |i|
-      all_strings << (strings[i] + strings[1 + 1])
-    }
+    (0...num_words - 1).each do |i|
+      all_strings << "#{strings[i]} #{strings[i + 1]}"
+    end
  
     # Extracting triple-word phrases
-    (0..num_words - 2).each do |i|
-      all_strings << (strings[i] + strings[1 + 1] + strings[i+ + 2])
-    }
+    (0...num_words - 2).each do |i|
+      all_strings << "#{strings[i]} #{strings[i + 1]} #{strings[i + 2]}"
+    end
     return all_strings
-  }
- 
-  private
+  end
   
   def has_enough_words(num_words)
-    numWords >= 3
+    num_words >= 3
   end
 end
 
