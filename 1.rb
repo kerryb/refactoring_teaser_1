@@ -16,22 +16,20 @@ module StringExtensions
   private
  
   def double_words(strings)
-    all_strings = []
- 
-    # Extracting double-word phrases
-    (0...strings.size - 1).each do |i|
-      all_strings << "#{strings[i]} #{strings[i + 1]}"
-    end
-    return all_strings
+    extract_phrases(strings, 2)
   end
  
   def triple_words(strings)
-    all_strings = []
- 
-    (0...strings.size - 2).each do |i|
-      all_strings << "#{strings[i]} #{strings[i + 1]} #{strings[i + 2]}"
+    extract_phrases(strings, 3)
+  end
+
+  def extract_phrases(strings, number_of_words)
+    result = []
+    (0...strings.size - number_of_words + 1).each do |i|
+      phrase = strings[i, number_of_words].join(' ')
+      result << phrase
     end
-    return all_strings
+    result
   end
 end
 
