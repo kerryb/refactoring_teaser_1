@@ -6,8 +6,8 @@ require 'spec'
 
 module StringExtensions
   def phrases(number)
-    strings = split
-    all_strings = single_double_triple_words(strings)
+    words = split
+    all_strings = single_double_triple_words(words)
     all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
   end
  
