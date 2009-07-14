@@ -2,69 +2,75 @@
 #
 #See http://blogs.agilefaqs.com/2009/07/08/refactoring-teaser-part-1/
 
-public final class StringUtil {
-  private static final Pattern REGEX_TO_SPLIT_ALONG_WHITESPACES = Pattern.compile("\\p{Z}|\\p{P}");
+module StringExtensions
+  REGEX_TO_SPLIT_ALONG_WHITESPACES = /\p{Z}|\p{P}/
  
-  public static String split(final String content, final int number) {
-    String listOfKeywords = "";
-    int count = 0;
-    String[] tokens = REGEX_TO_SPLIT_ALONG_WHITESPACES.split(content);
-    List<string> strings = Arrays.asList(tokens);
-    List<string> allStrings = singleDoubleTripleWords(strings);
-    int size = allStrings.size();
-    for (String phrase : allStrings) {
-      if (count == number) {
-        break;
-      }
-      listOfKeywords += "'" + phrase + "'";
-      if (++count < size && count < number) {
-        listOfKeywords += ", ";
-      }
+  def phrases(content, number)
+    listOfKeywords = ""
+    count = 0
+    strings = content.split(REGEX_TO_SPLIT_ALONG_WHITESPACES)
+    all_strings = single_double_triple_words(strings)
+    size = all_strings.size
+    all_strings.each do |phrase|
+      break if count == number
+      list_of_keywords += "'" + phrase + "'"
+      count += 1
+      if (count < size && count < number)
+        list_of_keywords += ", "
+      end
     }
-    return listOfKeywords;
+    return list_of_keywords
   }
  
-  private static List<String> singleDoubleTripleWords(final List<string> strings) {
-    List<string> allStrings = new ArrayList<string>();
-    int numWords = strings.size();
+  def single_double_triple_words(strings)
+    all_strings = []
+    num_words = strings.size
  
-    if (hasEnoughWords(numWords) == false) {
-      return allStrings;
+    return all_strings unless has_enough_words(num_words)
+ 
+    # Extracting single words. Total size of words == numWords
+ 
+    # Extracting single-word phrases.
+    (0..num_words).each do |i|
+      all_strings << strings[i]
     }
  
-    // Extracting single words. Total size of words == numWords
- 
-    // Extracting single-word phrases.
-    for (int i = 0; i < numWords; ++i) {
-      allStrings.add(strings.get(i));
+    # Extracting double-word phrases
+    (0..num_words - 1).each do |i|
+      all_strings << (strings[i] + strings[1 + 1])
     }
  
-    // Extracting double-word phrases
-    for (int i = 0; i < numWords - 1; ++i) {
-      allStrings.add(strings.get(i) + " " + strings.get(i + 1));
+    # Extracting triple-word phrases
+    (0..num_words - 2).each do |i|
+      all_strings << (strings[i] + strings[1 + 1] + strings[i+ + 2])
     }
- 
-    // Extracting triple-word phrases
-    for (int i = 0; i < numWords - 2; ++i) {
-      allStrings.add(strings.get(i) + " " + strings.get(i + 1) + " " + strings.get(i + 2));
-    }
-    return allStrings;
+    return all_strings
   }
  
-  private static boolean hasEnoughWords(final int numWords) {
-    if (numWords < 3) {
-      return false;
-    }
-    return true;
-  }
-}
+  private
+  
+  def has_enough_words(num_words)
+    numWords >= 3
+  end
+end
 
-public class StringUtilTest {
-  @Test
-  public void testSplit() {
-    assertEquals("'Hello', 'World', 'Java', 'Hello World', 'World Java', 'Hello World Java'", StringUtil.split("Hello World Java", 6));
-    assertEquals("'Hello', 'World', 'Java', 'Hello World', 'World Java', 'Hello World Java'", StringUtil.split("Hello World Java", 10));
-    assertEquals("'Hello', 'World', 'Java', 'Hello World'", StringUtil.split("Hello World Java", 4));
-    assertEquals("'Hello'", StringUtil.split("Hello World Java", 1));
-  }
-}
+String.send(:include, StringExtensions)
+
+describe StringExtensions do
+  it 'finds all phrases' do
+    'Hello World Ruby'.phrases(6).should == "'Hello', 'World', 'Ruby', 'Hello World', 'World Ruby', 'Hello World Ruby'"
+  end
+
+  it 'returns all phrases when asked for more than exist' do
+    'Hello World Ruby'.phrases(10).should == "'Hello', 'World', 'Ruby', 'Hello World', 'World Ruby', 'Hello World Ruby'"
+  end
+
+  it 'returns the first n phrases when asked for fewer than exist' do
+    'Hello World Ruby'.phrases(4).should == "'Hello', 'World', 'Ruby', 'Hello World'"
+  end
+
+  it 'returns the first word when asked for one phrase' do
+    'Hello World Ruby'.phrases(1).should == "'Hello'"
+  end
+end
+
