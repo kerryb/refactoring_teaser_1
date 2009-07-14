@@ -8,20 +8,9 @@ module StringExtensions
   REGEX_TO_SPLIT_ALONG_WHITESPACES = /\s+/
  
   def phrases(number)
-    list_of_keywords = ""
-    count = 0
     strings = split(REGEX_TO_SPLIT_ALONG_WHITESPACES)
     all_strings = single_double_triple_words(strings)
-    size = all_strings.size
-    all_strings.each do |phrase|
-      break if count == number
-      list_of_keywords += "'" + phrase + "'"
-      count += 1
-      if (count < size && count < number)
-        list_of_keywords += ", "
-      end
-    end
-    return list_of_keywords
+    all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
   end
  
   private
