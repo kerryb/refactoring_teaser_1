@@ -17,10 +17,9 @@ module StringExtensions
  
   def double_words(strings)
     all_strings = []
-    num_words = strings.size
  
     # Extracting double-word phrases
-    (0...num_words - 1).each do |i|
+    (0...strings.size - 1).each do |i|
       all_strings << "#{strings[i]} #{strings[i + 1]}"
     end
     return all_strings
@@ -28,9 +27,8 @@ module StringExtensions
  
   def triple_words(strings)
     all_strings = []
-    num_words = strings.size
  
-    (0...num_words - 2).each do |i|
+    (0...strings.size - 2).each do |i|
       all_strings << "#{strings[i]} #{strings[i + 1]} #{strings[i + 2]}"
     end
     return all_strings
