@@ -8,21 +8,13 @@ module StringExtensions
   def phrases(number)
     words = split
     all_strings = words
-    all_strings += double_words(words)
-    all_strings += triple_words(words)
+    all_strings += extract_phrases(words, 2)
+    all_strings += extract_phrases(words, 3)
     all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
   end
  
   private
  
-  def double_words(strings)
-    extract_phrases(strings, 2)
-  end
- 
-  def triple_words(strings)
-    extract_phrases(strings, 3)
-  end
-
   def extract_phrases(strings, number_of_words)
     result = []
     (0...strings.size - number_of_words + 1).each do |i|
