@@ -7,24 +7,18 @@ require 'spec'
 module StringExtensions
   def phrases(number)
     words = split
-    all_strings = single_double_triple_words(words)
+    all_strings = words
+    all_strings += double_triple_words(words)
     all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
   end
  
   private
  
-  def single_double_triple_words(strings)
+  def double_triple_words(strings)
     all_strings = []
     num_words = strings.size
  
     return all_strings unless has_enough_words(num_words)
- 
-    # Extracting single words. Total size of words == num_words
- 
-    # Extracting single-word phrases.
-    (0...num_words).each do |i|
-      all_strings << strings[i]
-    end
  
     # Extracting double-word phrases
     (0...num_words - 1).each do |i|
