@@ -8,19 +8,19 @@ module StringExtensions
   def phrases(number)
     words = split
     all_strings = words
-    (2..words.size).each do |number_of_words|
+    (2..words.size).each do |phrase_length|
       break if all_strings.length >= number
-      all_strings += extract_phrases(words, number_of_words)
+      all_strings += extract_phrases(words, phrase_length)
     end
     all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
   end
  
   private
  
-  def extract_phrases(strings, number_of_words)
+  def extract_phrases(strings, phrase_length)
     result = []
-    (0...strings.size - number_of_words + 1).each do |i|
-      phrase = strings[i, number_of_words].join(' ')
+    (0...strings.size - phrase_length + 1).each do |i|
+      phrase = strings[i, phrase_length].join(' ')
       result << phrase
     end
     result
