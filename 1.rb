@@ -12,7 +12,7 @@ module StringExtensions
       break if all_strings.length >= number
       all_strings += extract_phrases(words, phrase_length)
     end
-    all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
+    format_output(all_strings[0, number])
   end
  
   private
@@ -21,6 +21,10 @@ module StringExtensions
     (0...words.size - phrase_length + 1).map do |i|
       words[i, phrase_length].join(' ')
     end
+  end
+
+  def format_output(phrases)
+    phrases.map {|s| "'#{s}'"}.join(', ')
   end
 end
 
