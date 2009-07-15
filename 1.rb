@@ -18,12 +18,9 @@ module StringExtensions
   private
  
   def extract_phrases(strings, phrase_length)
-    result = []
-    (0...strings.size - phrase_length + 1).each do |i|
-      phrase = strings[i, phrase_length].join(' ')
-      result << phrase
+    (0...strings.size - phrase_length + 1).map do |i|
+      strings[i, phrase_length].join(' ')
     end
-    result
   end
 end
 
