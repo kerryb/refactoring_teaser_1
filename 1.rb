@@ -9,6 +9,7 @@ module StringExtensions
     words = split
     all_strings = words
     (2..words.size).each do |number_of_words|
+      break if all_strings.length >= number
       all_strings += extract_phrases(words, number_of_words)
     end
     all_strings[0, number].map {|s| "'#{s}'"}.join(', ')
