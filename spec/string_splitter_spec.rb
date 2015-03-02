@@ -16,5 +16,13 @@ describe StringSplitter do
   it 'returns the first word when asked for one phrase' do
     expect(subject.split "Hello World Ruby", 1).to eq "'Hello'"
   end
-end
 
+  it "works if there are fewer than three words" do
+    expect(subject.split "Hello World", 3).to eq "'Hello', 'World', 'Hello World'"
+  end
+
+  it "supports phrases longer than three words" do
+    expect(subject.split "Hello World From Ruby", 20).to eq "'Hello', 'World', 'From', 'Ruby', " +
+      "'Hello World', 'World From', 'From Ruby', 'Hello World From', 'World From Ruby', 'Hello World From Ruby'"
+  end
+end
